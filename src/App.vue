@@ -5,6 +5,7 @@
     <router-link v-bind:to="'/about'">About</router-link>
     <router-link v-bind:to="'/param'">Param Link</router-link>
     <router-link v-bind:to="'/weather'">Weather Link</router-link>
+    <router-link v-bind:to="'/dogs'">dogs</router-link>
     <p>{{ count }}</p>
     <p>
       <button @click="increment">+</button>
