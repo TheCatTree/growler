@@ -64,6 +64,7 @@ export default new Vuex.Store({
             }
           })
             .then(response => {
+              console.log(response)
               parks[i].location = response.data.results.geometry.location
               // JSON responses are automatically parsed.
             }, (err) => {

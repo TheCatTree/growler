@@ -7,7 +7,7 @@
     <gmap-marker
       :key="index"
       v-for="(m, index) in markers"
-      :position="m.position"
+      :position={{markers[index].location}}
       :clickable="true"
       :draggable="true"
       @click="center=m.position"
@@ -21,15 +21,13 @@
     name: 'map',
     data () {
       return {
-        center: {lat: -41.2865, lng: 174.7762},
-        markers: [{
-          position: {lat: -41.2865, lng: 174.7762}
-        }, {
-          position: {lat: 11.0, lng: 11.0}
-        }]
+        center: {lat: -41.2865, lng: 174.7762}
       }
     },
     computed: {
+      markers () {
+        return this.$store.state.parks
+      },
       parks () {
         return this.$store.state.parks
       }
@@ -37,10 +35,14 @@
     methods: {
       load_parks () {
         return this.$store.dispatch('PARS_PARKS')
+      },
+      geocode_parks () {
+        return this.$store.dispatch('GEO_CODEPARKS', this.$store.state.parks)
       }
     },
     created: function () {
       this.load_parks()
+      this.geocode_parks()
     }
   }
 </script>
