@@ -8,6 +8,8 @@ import weather from '../components/Weather'
 import Dogs from '../components/Dogs'
 import paramdetails from '../components/paramdetails'
 import weatherdetails from '../components/weatherdetails'
+import Login from '../components/Login'
+import Map from '../components/map'
 
 Vue.use(Router)
 const routes = [
@@ -17,6 +19,8 @@ const routes = [
   { path: '/param', component: Param },
   { path: '/weather', component: weather },
   { path: '/dogs', component: Dogs },
+  { path: '/login', component: Login },
+  { path: '/map', component: Map },
   { path: '/Paramdetails/:id', component: paramdetails, name: 'Paramdetails' },
   { path: '/Weatherdetails/:city', component: weatherdetails, name: 'Weatherdetails' }
 ]
