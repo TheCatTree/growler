@@ -55,6 +55,8 @@ export default new Vuex.Store({
     GEO_CODEPARKS: function (context, parks) {
       for (var i = 0; i < parks.length; i++) {
         if (parks[i].location == null || (Object.keys(parks[i].location).length === 0 && parks[i].location.constructor === Object)) {
+          // create locaton property if it dose not allready exist
+          parks[i].location = {}
           // Geocode data add to park on api
           axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
             params: {
@@ -65,7 +67,8 @@ export default new Vuex.Store({
           })
             .then(response => {
               console.log(response)
-              parks[i].location = response.data.results.geometry.location
+              console.log(response.data.results['0'].geometry.location)
+              parks[i].location = response.data.results['0'].geometry.location
               // JSON responses are automatically parsed.
             }, (err) => {
               console.log(err)
