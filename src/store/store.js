@@ -1,6 +1,8 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import axios from 'axios'
+// var parse = require('csv-parse');
+// var fs = require('fs');
 
 Vue.use(Vuex)
 
@@ -10,7 +12,8 @@ export default new Vuex.Store({
     dogs: [],
     token: '',
     username: '',
-    logedin: false
+    logedin: false,
+    parks: {}
   },
   actions: {
     LOG_IN: function (context, details) {
@@ -37,6 +40,38 @@ export default new Vuex.Store({
         }, (err) => {
           console.log(err)
         })
+    },
+    PARS_PARKS: function (context) {
+      axios.get('http://localhost:3000/api/park', {
+        headers: {'x-access-token': context.state.token}
+      })
+        .then(response => {
+          // JSON responses are automatically parsed.
+          context.commit('SET_PARKS', {parks: response.data})
+        }, (err) => {
+          console.log(err)
+        })
+    },
+    GEO_CODEPARKS: function (context, parks) {
+      for (var i = 0; i < parks.length; i++) {
+        if (parks[i].location == null || (Object.keys(parks[i].location).length === 0 && parks[i].location.constructor === Object)) {
+          // Geocode data add to park on api
+          axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+            params: {
+              address: parks[i].name.split(' ').join('+'),
+              bounds: '-41.3594,174.72061|-41.2702,174.86446',
+              key: 'AIzaSyCJh0UaDeOTa6M-83TxC47I-CmJ4QPrhhc'
+            }
+          })
+            .then(response => {
+              parks[i].location = response.data.results.geometry.location
+              // JSON responses are automatically parsed.
+            }, (err) => {
+              console.log(err)
+            })
+        }
+      }
+      context.commit('SET_PARKS', {parks: parks})
     }
   },
 
@@ -54,6 +89,9 @@ export default new Vuex.Store({
     },
     SET_logedin: (state, { toggle }) => {
       state.logedin = toggle
+    },
+    SET_PARKS: (state, { parks }) => {
+      state.parks = parks
     }
   }
 })

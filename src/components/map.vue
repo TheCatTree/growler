@@ -13,6 +13,7 @@
       @click="center=m.position"
     ></gmap-marker>
   </gmap-map>
+
 </template>
 
 <script>
@@ -27,6 +28,19 @@
           position: {lat: 11.0, lng: 11.0}
         }]
       }
+    },
+    computed: {
+      parks () {
+        return this.$store.state.parks
+      }
+    },
+    methods: {
+      load_parks () {
+        return this.$store.dispatch('PARS_PARKS')
+      }
+    },
+    created: function () {
+      this.load_parks()
     }
   }
 </script>

@@ -18,7 +18,7 @@
     },
     methods: {
       load_dogs () {
-        return this.$store.dispatch('LOAD_DOGS')
+        return this.$store.dispatch('LOG_DOGS')
       }
     },
     created: function () {
